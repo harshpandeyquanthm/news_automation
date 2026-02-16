@@ -1,8 +1,11 @@
-
 import os
 import json
+import sys
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler
+
+# Add project root to path so local imports work
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services.news_fetcher import fetch_news_from_tickertape, transform_article
 from services.news_storage import store_news, log_fetch_run, get_last_stored_date
@@ -11,7 +14,6 @@ from db.Connection import close_connection
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # Verify the request is from Vercel Cron (optional but recommended)
         auth_header = self.headers.get("Authorization")
         cron_secret = os.getenv("CRON_SECRET")
         if cron_secret and auth_header != f"Bearer {cron_secret}":
