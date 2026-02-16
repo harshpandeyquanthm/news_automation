@@ -1,0 +1,6 @@
+.env
+.claude
+__pycache__
+news-venv
+experiments
+data
